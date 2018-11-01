@@ -13,7 +13,7 @@ You can add shell function to your program very easily.
 
 # Sample
 
-`// Your command handler
+    // Your command handler
 int handler(int argc, char* argv[])
 {
 	char* cmd = argv[0];
