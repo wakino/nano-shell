@@ -1,7 +1,7 @@
 # About nano-shell
-Some Real-time OS doen't have shell function.
-nano-shell is super simple shell for these environment.
-You can add shell function to your program very easily.
+Some Real-time OS doen't have shell function.  
+nano-shell is super simple shell for these environment.  
+You can add shell function to your program very easily.  
 
 # Function
 - Parse user input into argc, argv[] style and call handler you registered
@@ -13,7 +13,7 @@ You can add shell function to your program very easily.
 
 # Sample
 
-// Your command handler
+`// Your command handler
 int handler(int argc, char* argv[])
 {
 	char* cmd = argv[0];
@@ -45,4 +45,4 @@ int handler(int argc, char* argv[])
 void main(void){
 	puts("\n--- Nano Shell Sample ---\n");
 	nanoShellRun("-> ", handler);	
-}
+}`
