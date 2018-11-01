@@ -1,5 +1,6 @@
 # About nano-shell
-nano-shell is Super simple shell for embedded program.
+Some Real-time OS doen't have shell function.
+nano-shell is super simple shell for these environment.
 You can add shell function to your program very easily.
 
 # Function
