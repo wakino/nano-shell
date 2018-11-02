@@ -13,6 +13,7 @@ You can add shell function to your program very easily.
 
 # Sample
 
+```c
 	// Your command handler
 	int handler(int argc, char* argv[])
 	{
@@ -45,4 +46,5 @@ You can add shell function to your program very easily.
 	void main(void){
 		puts("\n--- Nano Shell Sample ---\n");
 		nanoShellRun("-> ", handler);	
-	}`
+	}
+```
