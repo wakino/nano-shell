@@ -1,8 +1,10 @@
 .PHONY: all
 all: nanoShell.out
 
-nanoShell.out: nanoShell.o howToUse.o
-	gcc -o nanoShell.out nanoShell.o howToUse.o
+objs = nanoShell.o howToUse.o
+
+nanoShell.out: $(objs)
+	gcc -o nanoShell.out $(objs)
 
 nanoShell.o: nanoShell.c
 	gcc -c nanoShell.c

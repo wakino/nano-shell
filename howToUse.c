@@ -23,16 +23,16 @@ int handler(int argc, char* argv[])
 		puts("exit");
 	}
 	else if(strcmp(cmd, "exit") == 0){
-		return 0; // Exit shell loop
+		return NANOSHELL_EXIT;
 	}
 	else{
 		puts("Unknown command.");
 	}
-	return 1; // Keep shell loop running
+	return NANOSHELL_KEEP_RUNNING;
 }
 
 void main(void){
 	puts("\n--- Nano Shell Sample ---\n");
-	nanoShellRun("-> ", handler);	
+	nanoShellRun("-> ", handler);
 }
-	
+

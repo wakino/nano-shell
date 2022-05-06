@@ -3,6 +3,8 @@
 
 #define MAX_COMMAND_LEN	256
 #define MAX_ARG			32
+#define NANOSHELL_EXIT			0
+#define NANOSHELL_KEEP_RUNNING	1
 
 // command handler
 // (if you want to exit shell loop, return 0)
