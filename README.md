@@ -5,13 +5,14 @@ You can add shell function to your program very easily.
 
 # Function
 - Parse user input into argc, argv[] style and call handler you registered
-- You can use faverite　command prompt
+- You can use faverite command prompt
+- easy to show help for commands
 
 # How to implement
 1) Implement your command handler
 2) Call nanoShellRun() with handler
 
-* "help" and "exit" are build-in command
+* "help" and "exit" are reserved for build-in command
 
 # Sample
 
