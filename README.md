@@ -13,18 +13,6 @@ You can add shell function to your program very easily.
 
 * "help" and "exit" are build-in command
 
-# How to use
--> say Hello 3
-Hello
-Hello
-Hello
--> help
------- H E L P ------
- - print text X times:
-      say [text] [count]
--> exit
-
-
 # Sample
 
 ```c
@@ -58,3 +46,17 @@ void main(void){
 	nanoShellRun("-> ", handler);
 }
 ```
+
+# How to use sample
+```
+-> say Hello 3
+Hello
+Hello
+Hello
+-> help
+------ H E L P ------
+ - print text X times:
+      say [text] [count]
+-> exit
+```
+
