@@ -2,7 +2,7 @@
 //  nanoShell.c
 //  Super Simple Shell Module
 //
-//  Copyright © 2018 Takatsura Miyawaki All rights reserved.
+//  Copyright © 2018-2022 Takatsura Miyawaki All rights reserved.
 //
 
 /** MIT License
@@ -31,21 +31,16 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "nanoShell.h"
 
-#define TRUE			1
-#define FALSE			0
-
-// prototype
 static int parseCommand(char* buf, char* argv[]);
 
-
-//	Run shell loop
 void nanoShellRun(const char* prompt, SHELL_COMMAND handler)
 {
 	int index = 0;
-	char buf[MAX_COMMAND_LEN];
-	int tooLong = FALSE;
+	char buf[NANOSHELL_MAX_COMMAND_LEN];
+	bool tooLong = false;
 
 	printf("%s", prompt);
 
@@ -54,22 +49,22 @@ void nanoShellRun(const char* prompt, SHELL_COMMAND handler)
 		if(c != '\r'){
 			if(c == '\n'){
 				int argc = 0;
-				char* argv[MAX_ARG];
+				char* argv[NANOSHELL_MAX_ARG];
 				memset(argv, 0, sizeof(argv));
 				buf[index] = '\0';
 				index = 0;
 				argc = parseCommand(buf, argv);
 				if(argc > 0){
-					if(handler(argc, argv) == 0){
+					if(handler(argc, argv) == DISPATCH_RESULT_EXIT){
 						break;
 					}
 				}
 				printf("%s", prompt);
 			}
-			else if(index >= (MAX_COMMAND_LEN-1)){
-				if(tooLong == FALSE){
-					puts("too long command.\n");
-					tooLong = TRUE;
+			else if(index >= (NANOSHELL_MAX_COMMAND_LEN-1)){
+				if(tooLong == false){
+					puts("*** too long command.\n");
+					tooLong = true;
 				}
 			}
 			else{
@@ -80,9 +75,50 @@ void nanoShellRun(const char* prompt, SHELL_COMMAND handler)
 	}
 }
 
+DISPATCH_RESULT nanoShellDispatch(COMMAND_INFO* commands,  int argc, char* argv[]){
+	bool handled = false;
+	COMMAND_RESULT result;
+	int i;
+	for(i = 0; commands[i].command != NULL ;i++){
+		if(strcmp(commands[i].command, argv[0]) == 0){
+			result = commands[i].handler(argc, argv);
+			handled = true;
+			break;
+		}
+	}
+
+	if(!handled){
+		if(strcmp("help", argv[0]) == 0){
+			printf("------ H E L P ------\n");
+			for(int j = 0; commands[j].command != NULL ;j++){
+				printf(" - %s:\n", commands[j].functionDescription);
+				printf("      %s %s\n", commands[j].command, commands[j].paramDescription);
+			}
+			handled = true;
+		}
+		else if(strcmp("exit", argv[0]) == 0){
+			result = CMD_RESULT_DO_EXIT;
+			handled = true;
+		}
+	}
+
+	if(handled){
+		if(result == CMD_RESULT_INVALID_PARAM){
+			printf("*** invalid parameter:\n");
+			printf("    %s %s\n", commands[i].command, commands[i].paramDescription);
+		}
+		else if(result == CMD_RESULT_DO_EXIT){
+			return DISPATCH_RESULT_EXIT;
+		}
+	}
+	else{
+		printf("*** invalid command:%s\n", argv[0]);
+	}
+	return DISPATCH_RESULT_KEEP_RUNNING;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // private function
-
 
 static int parseCommand(char* buf, char* argv[])
 {
@@ -91,17 +127,17 @@ static int parseCommand(char* buf, char* argv[])
 
 	if(len > 0){
 		int i = 0;
-		int hasData = FALSE;
+		bool hasData = false;
 
 		for(i = 0; i < len; i++){
 			if(buf[i] == ' '){
 				buf[i] = '\0';
-				hasData = FALSE;
+				hasData = false;
 			}
 			else if(!hasData){
 				argv[index] = &buf[i];
 				index++;
-				hasData = TRUE;
+				hasData = true;
 			}
 		}
 	}

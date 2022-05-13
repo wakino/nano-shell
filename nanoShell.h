@@ -24,15 +24,33 @@ SOFTWARE.
 #ifndef _NANO_SHELL_H_INCLUDED_
 #define _NANO_SHELL_H_INCLUDED_
 
-#define MAX_COMMAND_LEN	256
-#define MAX_ARG			32
-#define NANOSHELL_EXIT			0
-#define NANOSHELL_KEEP_RUNNING	1
+#define NANOSHELL_MAX_COMMAND_LEN	256
+#define NANOSHELL_MAX_ARG			32
+
+typedef enum {
+	DISPATCH_RESULT_EXIT,
+	DISPATCH_RESULT_KEEP_RUNNING
+} DISPATCH_RESULT;
+
+typedef enum {
+	CMD_RESULT_DONE,
+	CMD_RESULT_INVALID_PARAM,
+	CMD_RESULT_DO_EXIT
+} COMMAND_RESULT;
+
+typedef struct {
+	char* command;
+	char* paramDescription;
+	char* functionDescription;
+	COMMAND_RESULT (*handler)(int argc, char* argv[]);
+} COMMAND_INFO;
 
 // command handler
 // (if you want to exit shell loop, return 0)
 typedef int (* SHELL_COMMAND)(int argc, char* argv[]);
 
+
 void nanoShellRun(const char* prompt, SHELL_COMMAND handler);
+DISPATCH_RESULT nanoShellDispatch(COMMAND_INFO* commands,  int argc, char* argv[]);
 
 #endif

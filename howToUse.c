@@ -41,32 +41,34 @@ void main(void){
 	nanoShellRun("-> ", handler);
 }
 
-int handler(int argc, char* argv[])
-{
-	char* cmd = argv[0];
-	if(match(cmd, "say")){
-		if(argc >= 3){
-			long i ;
-			long count = parseNum(argv[2]);
-			for(i = 0; i < count; i++){
-				puts(argv[1]);
-			}
+COMMAND_RESULT sayHello(int argc, char* argv[]){
+	if(argc >= 3){
+		long i ;
+		long count = parseNum(argv[2]);
+		for(i = 0; i < count; i++){
+			puts(argv[1]);
 		}
-		else{
-			puts("say [text] [count]\n");
-		}
-	}
-	else if(match(cmd, "help")){
-		puts("say [text] [count]");
-		puts("exit");
-	}
-	else if(match(cmd, "exit")){
-		return NANOSHELL_EXIT;
+		return CMD_RESULT_DONE;
 	}
 	else{
-		puts("Unknown command.");
+		return CMD_RESULT_INVALID_PARAM;
 	}
-	return NANOSHELL_KEEP_RUNNING;
+
+}
+COMMAND_RESULT bye(int argc, char* argv[]){
+	puts("bye...");
+	return CMD_RESULT_DO_EXIT;
+}
+
+int handler(int argc, char* argv[])
+{
+	static COMMAND_INFO commands[] = {
+		{"say", "[text] [count]", "print text X times", sayHello},
+		{"bye", "", "exit program", bye},
+		{NULL, NULL, NULL, NULL}	// end of command mark
+	};
+
+	return nanoShellDispatch(commands, argc, argv);
 }
 
 bool match(const char* txt1, const char* txt2)
