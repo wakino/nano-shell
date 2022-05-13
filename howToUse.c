@@ -53,8 +53,8 @@ COMMAND_RESULT sayHello(int argc, char* argv[]){
 	else{
 		return CMD_RESULT_INVALID_PARAM;
 	}
-
 }
+
 COMMAND_RESULT bye(int argc, char* argv[]){
 	puts("bye...");
 	return CMD_RESULT_DO_EXIT;
